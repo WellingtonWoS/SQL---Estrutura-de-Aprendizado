@@ -331,3 +331,46 @@ WHERE n_numeclien IN (SELECT n_numeclien FROM comclien_bkp);
 
 DELETE FROM comcontato														##Não funcionou
 WHERE n_numeclien NOT IN (SELECT n_numeclien FROM comvenda);
+
+##Funções de Agregação##
+SELECT c_codiclien, c_razaclien
+FROM comvenda, comcliem
+WHERE comvenda.n_numeclien = comcliem.n_numeclien
+ORDER BY c_razaclien;
+
+##GROUP BY e usando o COUNT (contador) para as vendas##
+SELECT c_codiclien, c_razaclien, COUNT(n_numevenda) Qtde
+FROM comcliem, comvenda
+WHERE comvenda.n_numeclien = comcliem.n_numeclien
+GROUP BY c_codiclien, c_razaclien
+ORDER BY c_razaclien;
+
+SELECT COUNT(*)
+FROM comcliem;
+
+##HAVING COUNT()
+SELECT c_razaclien, COUNT(n_numevenda)
+FROM comcliem, comvenda
+WHERE comvenda.n_numeclien = comcliem.n_numeclien
+GROUP BY c_razaclien
+HAVING COUNT(n_numevenda) > 2;
+
+##MAX() E MIN()
+SELECT MAX(n_totavenda) maior_venda
+FROM comvenda;
+
+SELECT MIN(n_totavenda) menor_venda
+FROM comvenda;
+
+SELECT MIN(n_totavenda) menor_venda, MAX(n_totavenda)
+maior_venda FROM comvenda;
+
+##SUM()
+SELECT SUM(n_valovenda) valor_venda, SUM(n_descvenda) descontos, SUM(n_totavenda) total_venda
+FROM comvenda
+WHERE d_datavenda BETWEEN '2015-01-01' AND '2015-01-01';
+
+##AVG()
+SELECT FORMAT(AVG(n_totavenda),2)
+FROM comvenda;
+
